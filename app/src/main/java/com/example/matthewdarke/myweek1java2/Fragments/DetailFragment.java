@@ -11,7 +11,7 @@ import com.example.matthewdarke.myweek1java2.R;
  * Created by matthewdarke on 11/25/14.
  */
 public class DetailFragment extends Fragment {
-
+    public static final String TAG = "DetailFragment.TAG";
 
     //no  arguments constructor
     public DetailFragment() {

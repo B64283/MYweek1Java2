@@ -14,7 +14,7 @@ public class MovieData {
     final String TAG = "MOVIEDATA CLASS";
 
     private String mTitle;
-    private Double mYear;
+    private Integer mYear;
 
 
     private String mRate;
@@ -25,7 +25,7 @@ public class MovieData {
     public MovieData() {
     }
 
-    public MovieData(String title, Double year, String mpaa_rating, Double runtime, String thumbnail) {
+    public MovieData(String title, Integer year, String mpaa_rating, Double runtime, String thumbnail) {
         mTitle = title;
         mYear = year;
         mRate = mpaa_rating;
@@ -37,7 +37,7 @@ public class MovieData {
     public MovieData(JSONObject stockData) {
         try {
             mTitle = stockData.getString("title");
-            mYear = stockData.getDouble("year");
+            mYear = stockData.getInt("year");
             mRate = stockData.getString("mpaa_rating");
             mRunT = stockData.getDouble("runtime");
             mThumb = stockData.getString("thumbnail");
@@ -56,11 +56,11 @@ public class MovieData {
         this.mTitle = mTitle;
     }
 
-    public Double getmYear() {
+    public Integer getmYear() {
         return mYear;
     }
 
-    public void setmYear(Double mYear) {
+    public void setmYear(Integer mYear) {
         this.mYear = mYear;
     }
 
@@ -87,6 +87,9 @@ public class MovieData {
     public void setmThumb(String mThumb) {
         this.mThumb = mThumb;
     }
+
+
+
 
     public Bundle toBundle() {
 

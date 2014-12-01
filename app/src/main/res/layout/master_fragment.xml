@@ -14,26 +14,22 @@
         android:orientation="horizontal"
         android:padding="3dip" >
 
-        <EditText
-            android:id="@+id/text_search_box"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:gravity="center" />
+
 
         <Button
             android:id="@+id/button_search"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableRight="@android:drawable/ic_search_category_default" />
+            android:drawableRight="@android:drawable/ic_search_category_default"
+            android:drawableEnd="@android:drawable/ic_search_category_default"/>
     </LinearLayout>
 
     <ListView
-        android:id="@+id/list_movies"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0"
         android:clickable="true"
-        android:textAlignment="center"/>
+       />
 
 </LinearLayout>

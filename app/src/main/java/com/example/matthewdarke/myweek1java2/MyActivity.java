@@ -1,6 +1,8 @@
 package com.example.matthewdarke.myweek1java2;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,9 +10,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import com.example.matthewdarke.myweek1java2.Fragments.DetailFragment;
+import com.example.matthewdarke.myweek1java2.Fragments.MasterFragment;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -25,15 +29,15 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class MyActivity extends Activity
+public class MyActivity extends Activity implements MasterFragment.onItemClickListener
 {
     // Rotten Tomatoes API key for application
     private static final String API_KEY = "uwagqpf95hwhwe4vnfe36gj7";
 
     //number of movies in a single request to web server
-    private static final int PAGE_LIMIT = 30;
+    private static final int PAGE_LIMIT = 10;
     public ProgressBar pb;
-    private EditText searchBox;
+    private String SEARCH_WORD = "Incredible";
     private Button searchButton;
     private ListView moviesList;
 
@@ -47,8 +51,25 @@ public class MyActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+        if(savedInstanceState == null) {
 
-        searchBox = (EditText) findViewById(R.id.text_search_box);
+        MasterFragment fragment = new MasterFragment();
+        getFragmentManager().beginTransaction()
+            .replace(R.id.master_container, fragment, MasterFragment.TAG).commit();
+}
+//set up detail view with fragment manager
+
+        FragmentManager manage = getFragmentManager();
+        FragmentTransaction transact = manage.beginTransaction();
+
+        //detail view
+
+        DetailFragment deetFrag = new DetailFragment();
+        transact.replace(R.id.detail_viewer, deetFrag, DetailFragment.TAG);
+        transact.commit();
+
+        new MyTask().execute();
+
         searchButton = (Button) findViewById(R.id.button_search);
         searchButton.setOnClickListener(new OnClickListener()
 
@@ -64,20 +85,27 @@ public class MyActivity extends Activity
             @Override
             public void onClick(View arg0)
             {
-                new MyTask().execute("http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" + API_KEY + "&q=" + searchBox.getText().toString().trim() + "&page_limit=" + PAGE_LIMIT);
+                //new MyTask().execute("http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" + API_KEY + "&q=" + SEARCH_WORD + "&page_limit=" + PAGE_LIMIT);
             }
         });
-        moviesList = (ListView) findViewById(R.id.list_movies);
+        //moviesList = (ListView) findViewById(R.id.list);
     }
 
     private void refreshMoviesList(String[] movieTitles)
     {
-        pb = (ProgressBar) findViewById(R.id.progressBar2);
+        //pb = (ProgressBar) findViewById(R.id.progressBar2);
         pb.setVisibility(View.INVISIBLE);
         moviesList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, movieTitles));
     }
 
-   //set up asyncTask method
+
+//inerface callback
+    @Override
+    public void displayDetails(String id) {
+
+    }
+
+    //set up asyncTask method
     private class MyTask extends AsyncTask<String, String, String>
     {
         // makes request to specified url
@@ -95,7 +123,8 @@ public class MyActivity extends Activity
             try
             {
                 // make a HTTP request
-                response = httpclient.execute(new HttpGet(uri[0]));
+                response = httpclient.execute(new HttpGet("http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" + API_KEY + "&q=" + SEARCH_WORD + "&page_limit=" + PAGE_LIMIT));
+                moviesList = (ListView) findViewById(R.id.master_container);
                 StatusLine statusLine = response.getStatusLine();
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK)
                 {
@@ -129,13 +158,13 @@ public class MyActivity extends Activity
         @Override
         protected void onPostExecute(String response)
         {
-        super.onPostExecute(response);
+            super.onPostExecute(response);
 
             if (response != null)
             {
-            try
-            {
-          // converts String response to a JSON object,
+                try
+                {
+                    // converts String response to a JSON object,
                     // JSON is the response format Rotten Tomatoes uses
                     JSONObject jsonResponse = new JSONObject(response);
 
@@ -151,6 +180,7 @@ public class MyActivity extends Activity
                     }
 
                     // update the UI and make pb invisible
+
                     refreshMoviesList(movieTitles);
                     pb.setVisibility(View.INVISIBLE);
                 }
