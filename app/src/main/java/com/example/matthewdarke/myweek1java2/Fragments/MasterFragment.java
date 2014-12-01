@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -31,7 +32,7 @@ public class MasterFragment extends ListFragment {
     private String mSearchWord;
      public Button mSearchButton;
 
-
+    ArrayAdapter<MovieData>
     List<MovieData> movieDataList;
     public ListView moviesList;
 
@@ -55,12 +56,12 @@ public class MasterFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if(activity instanceof onDataFetch){
+        if(activity instanceof onItemClickListener){
 
-            mListener = (onDataFetch) activity;
+            mListener = (onItemClickListener) activity;
 
         } else {
-            throw new IllegalArgumentException("containing activity must implament onDataRetrieved");
+            throw new IllegalArgumentException("containing activity must implament onItemClickListener");
         }
     }
 

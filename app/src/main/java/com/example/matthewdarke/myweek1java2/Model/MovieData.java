@@ -34,13 +34,13 @@ public class MovieData {
 
     }
 
-    public MovieData(JSONObject stockData) {
+    public MovieData(JSONObject MovieData) {
         try {
-            mTitle = stockData.getString("title");
-            mYear = stockData.getInt("year");
-            mRate = stockData.getString("mpaa_rating");
-            mRunT = stockData.getDouble("runtime");
-            mThumb = stockData.getString("thumbnail");
+            mTitle = MovieData.getString("title");
+            mYear = MovieData.getInt("year");
+            mRate = MovieData.getString("mpaa_rating");
+            mRunT = MovieData.getDouble("runtime");
+            mThumb = MovieData.getString("thumbnail");
 
         } catch (Exception e) {
             Log.e(TAG, "Error updating display");

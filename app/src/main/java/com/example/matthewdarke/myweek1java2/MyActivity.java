@@ -29,8 +29,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class MyActivity extends Activity implements MasterFragment.onItemClickListener
-{
+public class MyActivity extends Activity implements MasterFragment.onItemClickListener {
     // Rotten Tomatoes API key for application
     private static final String API_KEY = "uwagqpf95hwhwe4vnfe36gj7";
 
@@ -99,9 +98,12 @@ public class MyActivity extends Activity implements MasterFragment.onItemClickLi
     }
 
 
+
+
 //inerface callback
     @Override
     public void displayDetails(String id) {
+
 
     }
 
