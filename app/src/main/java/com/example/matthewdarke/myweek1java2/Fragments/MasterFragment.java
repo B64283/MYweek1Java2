@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -31,8 +30,8 @@ public class MasterFragment extends ListFragment {
 
     private String mSearchWord;
      public Button mSearchButton;
-
-    ArrayAdapter<MovieData>
+    private MasterFragment masterFragment;
+    //ArrayAdapter<MovieData>
     List<MovieData> movieDataList;
     public ListView moviesList;
 
@@ -77,7 +76,7 @@ public class MasterFragment extends ListFragment {
         super.onActivityCreated(_savedInstanceState);
 
 
-        MovieArrayAdapter adapter = new MovieArrayAdapter(getActivity(), R.layout.master_fragment, movieDataList);
+        MovieArrayAdapter adapter = new MovieArrayAdapter(masterFragment.getActivity(), R.layout.master_fragment, movieDataList);
         moviesList.findViewById(R.id.master_container);
         setListAdapter(adapter);
     }
@@ -86,7 +85,7 @@ public class MasterFragment extends ListFragment {
 
 
 
-//on create is automaticly called by framework inflates layout and returns resulting view
+//on create is automatically called by framework inflates layout and returns resulting view
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
@@ -95,7 +94,6 @@ public class MasterFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.master_fragment, container, false);
 
 
-        mSearchButton = (Button) rootView.findViewById(R.id.button_search);
 
         //mSearchButton.setOnClickListener(new View.OnClickListener() {
 

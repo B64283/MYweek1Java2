@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E9E9E9"
+        android:background="#bbff99"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="horizontal"
@@ -24,6 +24,13 @@
             android:drawableEnd="@android:drawable/ic_search_category_default"/>
     </LinearLayout>
 
-
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:background="#bbff"
+        android:layout_height="0dip"
+        android:layout_weight="1.0"
+        android:clickable="true"
+       />
 
 </LinearLayout>
