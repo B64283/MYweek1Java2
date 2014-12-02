@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONObject;
-
 /**
  * Created by matthewdarke on 11/22/14.
  */
@@ -20,7 +19,7 @@ public class MovieData {
     private String mRate;
     private Double mRunT;
     private String mThumb;
-
+    //private ArrayList<String> castList;
 
     public MovieData() {
     }
@@ -31,6 +30,7 @@ public class MovieData {
         mRate = mpaa_rating;
         mRunT = runtime;
         mThumb = thumbnail;
+       // castList = cast;
 
     }
 
@@ -41,6 +41,7 @@ public class MovieData {
             mRate = MovieData.getString("mpaa_rating");
             mRunT = MovieData.getDouble("runtime");
             mThumb = MovieData.getString("thumbnail");
+            //castList = MovieData.getString("cast");
 
         } catch (Exception e) {
             Log.e(TAG, "Error updating display");
@@ -87,6 +88,10 @@ public class MovieData {
     public void setmThumb(String mThumb) {
         this.mThumb = mThumb;
     }
+
+    //public String getCastList() {
+
+      //  return TextUtils.join(", ", castList);
 
 
 

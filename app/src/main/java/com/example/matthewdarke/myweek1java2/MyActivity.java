@@ -1,19 +1,12 @@
 package com.example.matthewdarke.myweek1java2;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
-import com.example.matthewdarke.myweek1java2.Fragments.DetailFragment;
 import com.example.matthewdarke.myweek1java2.Fragments.MasterFragment;
 
 import org.apache.http.HttpResponse;
@@ -29,20 +22,17 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class MyActivity extends Activity implements MasterFragment.onItemClickListener {
+public class MyActivity extends ListActivity implements MasterFragment.OnSearchListener {
     // Rotten Tomatoes API key for application
     private static final String API_KEY = "uwagqpf95hwhwe4vnfe36gj7";
 
     //number of movies in a single request to web server
     private static final int PAGE_LIMIT = 10;
-    public ProgressBar pb;
+
     private String SEARCH_WORD = "Incredible";
-    private Button searchButton;
-    private ListView moviesList;
-
-
-
-
+   // private Button searchButton;
+    public ListView moviesList;
+    //private String id;
 
 
     @Override
@@ -53,47 +43,40 @@ public class MyActivity extends Activity implements MasterFragment.onItemClickLi
         if(savedInstanceState == null) {
 
         MasterFragment fragment = new MasterFragment();
-        getFragmentManager().beginTransaction()
+
+            getFragmentManager().beginTransaction()
             .replace(R.id.master_container, fragment, MasterFragment.TAG).commit();
 }
 //set up detail view with fragment manager
 
-        FragmentManager manage = getFragmentManager();
-        FragmentTransaction transact = manage.beginTransaction();
-
-        //detail view
-
-        DetailFragment deetFrag = new DetailFragment();
-        transact.replace(R.id.detail_viewer, deetFrag, DetailFragment.TAG);
-        transact.commit();
 
         new MyTask().execute();
 
-        searchButton = (Button) findViewById(R.id.button_search);
-        searchButton.setOnClickListener(new OnClickListener()
+        //searchButton = (Button) findViewById(R.id.button_search);
+        //searchButton.setOnClickListener(new OnClickListener()
 
 
 
-        {
+
             // sends an API request when the button is pressed
 
 
 
 
 
-            @Override
-            public void onClick(View arg0)
-            {
+            //@Override
+            //public void onClick(View arg0)
+            //{
                 //new MyTask().execute("http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" + API_KEY + "&q=" + SEARCH_WORD + "&page_limit=" + PAGE_LIMIT);
-            }
-        });
+            //}
+       // });
         //moviesList = (ListView) findViewById(R.id.list);
     }
 
     private void refreshMoviesList(String[] movieTitles)
     {
         //pb = (ProgressBar) findViewById(R.id.progressBar2);
-        pb.setVisibility(View.INVISIBLE);
+       // pb.setVisibility(View.INVISIBLE);
         moviesList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, movieTitles));
     }
 
@@ -101,11 +84,13 @@ public class MyActivity extends Activity implements MasterFragment.onItemClickLi
 
 
 //inerface callback
-    @Override
-    public void displayDetails(String id) {
+public void searchForSomething(String term){
+    //ASYNCTASK CODE THAT USES term HERE
 
+    new MyTask().execute();
 
-    }
+}
+
 
     //set up asyncTask method
     private class MyTask extends AsyncTask<String, String, String>
@@ -126,7 +111,7 @@ public class MyActivity extends Activity implements MasterFragment.onItemClickLi
             {
                 // make a HTTP request
                 response = httpclient.execute(new HttpGet("http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=" + API_KEY + "&q=" + SEARCH_WORD + "&page_limit=" + PAGE_LIMIT));
-                moviesList = (ListView) findViewById(R.id.master_container);
+                //moviesList = (ListView) findViewById(R.id.master_container);
                 StatusLine statusLine = response.getStatusLine();
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK)
                 {
@@ -184,7 +169,7 @@ public class MyActivity extends Activity implements MasterFragment.onItemClickLi
                     // update the UI and make pb invisible
 
                     refreshMoviesList(movieTitles);
-                    pb.setVisibility(View.INVISIBLE);
+                    //pb.setVisibility(View.INVISIBLE);
                 }
                 catch (JSONException e)
                 {

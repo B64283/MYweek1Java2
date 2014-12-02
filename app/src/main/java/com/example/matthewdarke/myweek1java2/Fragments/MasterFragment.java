@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.matthewdarke.myweek1java2.Model.MovieData;
@@ -26,44 +25,35 @@ public class MasterFragment extends ListFragment {
    // This way, the Fragment can refer back to
    // the containing Activity, allowing the Fragment to communicate with the Activity as needed
 
-    public onItemClickListener mListener;
 
-    private String mSearchWord;
-     public Button mSearchButton;
-    private MasterFragment masterFragment;
+    private OnSearchListener mListener;
+    //private String mSearchWord;
+    // public Button mSearchButton;
+    public MasterFragment masterFragment;
     //ArrayAdapter<MovieData>
     List<MovieData> movieDataList;
     public ListView moviesList;
 
     public static MasterFragment newInstance() {
-        MasterFragment frag = new MasterFragment();
-        return frag;
+        return new MasterFragment();
 
 
-}
-    public interface onItemClickListener {
-        /**
-         * Callback for when an item has been selected.
-         */
-        public void displayDetails(String id);
+}///////////INTERFACE CALLBACK
+
+    public interface OnSearchListener {
+        public void searchForSomething(String text);
     }
 
-  // Mandatory empty constructor for the fragment manager to instantiate the
- // fragment (e.g. upon screen orientation changes).
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        if(activity instanceof onItemClickListener){
-
-            mListener = (onItemClickListener) activity;
-
+        if(activity instanceof OnSearchListener) {
+            mListener = (OnSearchListener) activity;
         } else {
-            throw new IllegalArgumentException("containing activity must implament onItemClickListener");
+            throw new IllegalArgumentException("Containing activity must implement OnSearchListener interface");
         }
     }
-
 
     public MasterFragment() {
 
@@ -76,7 +66,8 @@ public class MasterFragment extends ListFragment {
         super.onActivityCreated(_savedInstanceState);
 
 
-        MovieArrayAdapter adapter = new MovieArrayAdapter(masterFragment.getActivity(), R.layout.master_fragment, movieDataList);
+        MovieArrayAdapter adapter = new MovieArrayAdapter(masterFragment.getActivity(), android.R.layout.simple_list_item_1,movieDataList);
+
         moviesList.findViewById(R.id.master_container);
         setListAdapter(adapter);
     }
@@ -112,6 +103,7 @@ public class MasterFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         System.out.println("the button is working");
+        //mListener.displayDetails();
         MovieData movieData = movieDataList.get(position);
 
 
@@ -132,11 +124,6 @@ public class MasterFragment extends ListFragment {
 
     }
 
-//interface call back
-public interface onDataFetch {
-
-
-}
 
 
 
