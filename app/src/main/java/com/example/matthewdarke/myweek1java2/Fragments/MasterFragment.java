@@ -12,6 +12,8 @@ import com.example.matthewdarke.myweek1java2.Model.MovieData;
 import com.example.matthewdarke.myweek1java2.MovieArrayAdapter;
 import com.example.matthewdarke.myweek1java2.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,31 +27,31 @@ public class MasterFragment extends ListFragment {
    // This way, the Fragment can refer back to
    // the containing Activity, allowing the Fragment to communicate with the Activity as needed
 
-
-    private OnSearchListener mListener;
+     //private mListener;
     //private String mSearchWord;
     // public Button mSearchButton;
     public MasterFragment masterFragment;
     //ArrayAdapter<MovieData>
     List<MovieData> movieDataList;
-    public ListView moviesList;
+    ListView moviesList;
 
-    public static MasterFragment newInstance() {
+    public static MasterFragment newInstance(ArrayList<HashMap<String, String>> movieDataList) {
         return new MasterFragment();
 
 
 }///////////INTERFACE CALLBACK
 
-    public interface OnSearchListener {
-        public void searchForSomething(String text);
+    public interface OnListCallBack {
+        public void onItemSelected(String detailStr);
+
     }
 
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(activity instanceof OnSearchListener) {
-            mListener = (OnSearchListener) activity;
+        if(activity instanceof OnListCallBack) {
+            OnListCallBack mListener = (OnListCallBack) activity;
         } else {
             throw new IllegalArgumentException("Containing activity must implement OnSearchListener interface");
         }
@@ -59,24 +61,6 @@ public class MasterFragment extends ListFragment {
 
 }
 
-
-
-    @Override
-    public void onActivityCreated(Bundle _savedInstanceState) {
-        super.onActivityCreated(_savedInstanceState);
-
-
-        MovieArrayAdapter adapter = new MovieArrayAdapter(masterFragment.getActivity(), android.R.layout.simple_list_item_1,movieDataList);
-
-        moviesList.findViewById(R.id.master_container);
-        setListAdapter(adapter);
-    }
-
-
-
-
-
-//on create is automatically called by framework inflates layout and returns resulting view
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
@@ -94,12 +78,32 @@ public class MasterFragment extends ListFragment {
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(Bundle _savedInstanceState) {
+        super.onActivityCreated(_savedInstanceState);
+
+
+        MovieArrayAdapter adapter = new MovieArrayAdapter(masterFragment.getActivity(), android.R.layout.simple_list_item_1,movieDataList);
+
+        moviesList.findViewById(R.id.master_container);
+        setListAdapter(adapter);
+    }
+
+
+
+
+
+//on create is automatically called by framework inflates layout and returns resulting view
+
+
 
 
 
 
 
     @Override
+
+
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         System.out.println("the button is working");

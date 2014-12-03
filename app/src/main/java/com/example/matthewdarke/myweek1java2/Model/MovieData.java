@@ -93,7 +93,17 @@ public class MovieData {
 
       //  return TextUtils.join(", ", castList);
 
+public MovieData(Bundle b) {
 
+    if (b !=null) {
+        this.mTitle = b.getString("title");
+        this.mYear = b.getInt("year");
+        this.mRunT = b.getDouble("runtime");
+        this.mRate = b.getString("mpaa_rating");
+        this.mThumb = b.getString("thumbnail");
+
+    }
+}
 
 
     public Bundle toBundle() {

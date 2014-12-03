@@ -32,4 +32,11 @@ public class DetailFragment extends Fragment {
        //an activity, the oncall method will be called then it will create the view and return it and display it to the screen
         return rootView;
     }
+
+
+
+
+    public static DetailFragment newInstance(String detailString) {
+        return new DetailFragment();
+    }
 }
