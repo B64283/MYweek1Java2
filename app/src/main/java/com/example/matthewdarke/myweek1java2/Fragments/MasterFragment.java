@@ -7,13 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
+import android.widget.ArrayAdapter;
 import com.example.matthewdarke.myweek1java2.Model.MovieData;
 import com.example.matthewdarke.myweek1java2.MovieArrayAdapter;
 import com.example.matthewdarke.myweek1java2.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,15 +26,31 @@ public class MasterFragment extends ListFragment {
    // This way, the Fragment can refer back to
    // the containing Activity, allowing the Fragment to communicate with the Activity as needed
 
-     //private mListener;
+     private OnListCallBack mListener;
+
+
     //private String mSearchWord;
     // public Button mSearchButton;
     public MasterFragment masterFragment;
-    //ArrayAdapter<MovieData>
-    List<MovieData> movieDataList;
-    ListView moviesList;
+    //ArrayAdapter<MovieData> movieDataList;
+    public ArrayAdapter<MovieData> movieDataList;
+    ListView mMoviesList;
 
-    public static MasterFragment newInstance(ArrayList<HashMap<String, String>> movieDataList) {
+
+
+    public MasterFragment() {
+
+    }
+
+@Override
+public void onCreate(Bundle SavedInstanceState) {
+super.onCreate(SavedInstanceState);
+
+}
+
+
+    public static MasterFragment newInstance(ArrayList<MovieData> mMoviesList) {
+
         return new MasterFragment();
 
 
@@ -47,26 +62,28 @@ public class MasterFragment extends ListFragment {
     }
 
 
+
+
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         if(activity instanceof OnListCallBack) {
-            OnListCallBack mListener = (OnListCallBack) activity;
+             mListener = (OnListCallBack) activity;
         } else {
             throw new IllegalArgumentException("Containing activity must implement OnSearchListener interface");
         }
     }
 
-    public MasterFragment() {
 
-}
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle SavedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.master_fragment, container, false);
+        return inflater.inflate(R.layout.master_fragment, container, false);
 
 
 
@@ -75,18 +92,18 @@ public class MasterFragment extends ListFragment {
         //returns root view when requested... Now when the instance of this fragment class is added to
         //an activity, the oncall method will be called then it will create the view and return it and display it to the screen
 
-        return rootView;
+
     }
 
     @Override
-    public void onActivityCreated(Bundle _savedInstanceState) {
-        super.onActivityCreated(_savedInstanceState);
+    public void onActivityCreated(Bundle _SavedInstanceState) {
+        super.onActivityCreated(_SavedInstanceState);
 
 
-        MovieArrayAdapter adapter = new MovieArrayAdapter(masterFragment.getActivity(), android.R.layout.simple_list_item_1,movieDataList);
+        ArrayAdapter<MovieData> arrayAdapter = new ArrayAdapter<MovieData>(masterFragment.getActivity(), android.R.layout.simple_list_item_1,movieDataList);
 
-        moviesList.findViewById(R.id.master_container);
-        setListAdapter(adapter);
+        movieDataList.findViewById(R.id.master_container);
+        setListAdapter(arrayAdapter);
     }
 
 
@@ -115,9 +132,9 @@ public class MasterFragment extends ListFragment {
         DetailFragment fragment = new DetailFragment();
 
         bundle.putString("title", movieData.getmTitle());
-        bundle.putDouble("year", movieData.getmYear());
+        bundle.putString("year", movieData.getmYear());
         bundle.putString("mpaa_rating", movieData.getmRate());
-        bundle.putDouble("runtime", movieData.getmRunT());
+        bundle.putString("runtime", movieData.getmRunT());
         bundle.putString("thumbnail", movieData.getmThumb());
 
 

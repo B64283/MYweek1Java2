@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.matthewdarke.myweek1java2.Fragments.DetailFragment;
 import com.example.matthewdarke.myweek1java2.Fragments.MasterFragment;
+import com.example.matthewdarke.myweek1java2.Model.MovieData;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -21,12 +22,10 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import static com.example.matthewdarke.myweek1java2.Fragments.DetailFragment.TAG;
-import static com.example.matthewdarke.myweek1java2.Fragments.DetailFragment.newInstance;
+import java.util.List;
 
 public class MyActivity extends Activity implements MasterFragment.OnListCallBack {
+
     // Rotten Tomatoes API key for application
     private static final String API_KEY = "uwagqpf95hwhwe4vnfe36gj7";
 
@@ -34,32 +33,31 @@ public class MyActivity extends Activity implements MasterFragment.OnListCallBac
     protected String SEARCH_WORD = "Incredible";
     //number of movies in a single request to web server
     private static final int PAGE_LIMIT = 10;
+
     public String detailSTR;
+    List<MovieData> movieDataList;
     // private Button searchButton;
-    private ArrayList<HashMap<String, String>> moviesList;
+    private ArrayList<MovieData> mMoviesList;
 
     private static final String TAG_MOVIE_TITLE = "title";
     private static final String TAG_MOVIE_YEAR = "year";
     private static final String TAG_MOVIE_RATING = "mpaa_rating";
     private static final String TAG_MOVIE_RUN = "runtime";
     //private String id;
-    JSONArray movies = null;
+    public JSONObject movies;
 
 
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle SavedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        super.onCreate(SavedInstanceState);
         setContentView(R.layout.activity_my);
-        if(savedInstanceState == null) {
+        if(SavedInstanceState == null) {
 
-        MasterFragment fragment = new MasterFragment();
-
-            getFragmentManager().beginTransaction()
-            .replace(R.id.master_container,
-             fragment, MasterFragment.TAG).commit();
+            MasterFragment masterFragment = new MasterFragment();
+            getFragmentManager().beginTransaction().add(R.id.master_container,masterFragment).commit();
 }
 //set up detail view with fragment manager
         DetailFragment detailFragment = new DetailFragment();
@@ -67,7 +65,7 @@ public class MyActivity extends Activity implements MasterFragment.OnListCallBac
         getFragmentManager().beginTransaction().add(R.id.detail_viewer,detailFragment)
         .commit();
 
-        moviesList = new ArrayList<HashMap<String, String>>();
+        mMoviesList = new ArrayList<MovieData>();
 
 
         new MyTask().execute();
@@ -104,8 +102,10 @@ public class MyActivity extends Activity implements MasterFragment.OnListCallBac
     //interface passes data
     @Override
     public void onItemSelected(String detailStr) {
+
         detailSTR = detailStr;
-        Log.i(detailStr, "List Item licked on");
+        Log.i("List Item licked on", detailStr);
+
     //Bundle b = movieData.toBundle();
 
 
@@ -168,67 +168,38 @@ public class MyActivity extends Activity implements MasterFragment.OnListCallBac
         {
             super.onPostExecute(response);
 
-            if (response != null)
+            if (response != null) {
                 try {
                     // converts String response to a JSON object,
                     // JSON is the response format Rotten Tomatoes uses
                     JSONObject jsonResponse = new JSONObject(response);
 
                     // fetch the array of movies in the response
-                    movies = jsonResponse.getJSONArray("movies");
+                    JSONArray ar = jsonResponse.getJSONArray("movies");
 
                     // add each movie's title to an array
                     //String[] movieTitles = new String[movies.length()];
 
-                    for (int i = 0; i < movies.length(); i++) {
-                        JSONObject movie = movies.getJSONObject(i);
 
-                        String name = movie.getString("title");
-                        String year = movie.getString("year");
-                        String mpaa_rating = movie.getString("mpaa_rating");
-                        String runtime = movie.getString("runtime");
+                    //JSONArray ar = new JSONArray(response);
+                    ArrayList<MovieData> mMoviesList = new ArrayList<MovieData>();
 
-                        HashMap<String, String> oneMovieItem = new HashMap<String, String>();
+                    for (int i = 0; i < ar.length(); i++) {
 
-                        oneMovieItem.put(TAG_MOVIE_TITLE, name);
-                        oneMovieItem.put(TAG_MOVIE_YEAR, year);
-                        oneMovieItem.put(TAG_MOVIE_RATING, mpaa_rating);
-                        oneMovieItem.put(TAG_MOVIE_RUN, runtime);
+                        JSONObject obj = ar.getJSONObject(i);
+                        MovieData mData = new MovieData();
 
-                        moviesList.add(oneMovieItem);
+                        mData.setmTitle(obj.getString("title"));
+                        mData.setmYear(obj.getString("year"));
+                        mData.setmRate(obj.getString("mpaa_rating"));
+                        mData.setmRunT(obj.getString("runtime"));
+
+                        mMoviesList.add(mData);
+
 
                     }
 
-                    MasterFragment frag = (MasterFragment) getFragmentManager()
-                            .findFragmentByTag(MasterFragment.TAG);
 
-                    if (frag == null) {
-                        frag = MasterFragment.newInstance(moviesList);
-                                   getFragmentManager().beginTransaction()
-                                   .replace(R.id.master_container, frag, MasterFragment.TAG)
-                                   .commit();
-
-                    } else {
-
-                        MasterFragment.newInstance(moviesList);
-                    }
-
-
-
-                    DetailFragment detailFragment = (DetailFragment) getFragmentManager()
-                            .findFragmentByTag(DetailFragment.TAG);
-
-                    if (detailFragment == null) {
-
-                       detailFragment = DetailFragment.newInstance(detailSTR);
-                                 getFragmentManager().beginTransaction()
-                                         .replace(R.id.detail_viewer, frag, TAG)
-                                               .commit();
-
-                    } else {
-
-                        newInstance(detailSTR);
-                    }
 
 
                     // update the UI and make pb invisible
@@ -238,6 +209,7 @@ public class MyActivity extends Activity implements MasterFragment.OnListCallBac
                 } catch (JSONException e) {
                     Log.d("Test", "Failed to parse the JSON response!");
                 }
+            }
         }
     }
 }

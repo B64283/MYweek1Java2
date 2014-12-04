@@ -18,13 +18,13 @@ import java.util.List;
 public class MovieArrayAdapter extends ArrayAdapter<MovieData> {
 
     private Context context;
-    private List<MovieData> movieDataList;
+    private List<MovieData> mMoviesList;
 
     public MovieArrayAdapter(Context context, int resource, List<MovieData> objects) {
 
         super(context, resource, objects);
         this.context = context;
-        this.movieDataList = objects;
+        this.mMoviesList = objects;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class MovieArrayAdapter extends ArrayAdapter<MovieData> {
                 (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.movie_listitem, null);
 
-        MovieData movieData = movieDataList.get(position);
+        MovieData movieData = mMoviesList.get(position);
         TextView tv = (TextView)view.findViewById(R.id.textView_list);
 
         tv.setText(movieData.getmTitle());

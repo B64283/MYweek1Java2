@@ -4,27 +4,30 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+
 /**
  * Created by matthewdarke on 11/22/14.
  */
-public class MovieData {
+public class MovieData extends HashMap<String, String> {
 
 
     final String TAG = "MOVIEDATA CLASS";
 
     private String mTitle;
-    private Integer mYear;
+    private String mYear;
 
 
     private String mRate;
-    private Double mRunT;
+    private String mRunT;
     private String mThumb;
     //private ArrayList<String> castList;
 
     public MovieData() {
     }
 
-    public MovieData(String title, Integer year, String mpaa_rating, Double runtime, String thumbnail) {
+    public MovieData(String title, String year, String mpaa_rating, String runtime, String thumbnail) {
         mTitle = title;
         mYear = year;
         mRate = mpaa_rating;
@@ -37,9 +40,9 @@ public class MovieData {
     public MovieData(JSONObject MovieData) {
         try {
             mTitle = MovieData.getString("title");
-            mYear = MovieData.getInt("year");
+            mYear = MovieData.getString("year");
             mRate = MovieData.getString("mpaa_rating");
-            mRunT = MovieData.getDouble("runtime");
+            mRunT = MovieData.getString("runtime");
             mThumb = MovieData.getString("thumbnail");
             //castList = MovieData.getString("cast");
 
@@ -57,11 +60,11 @@ public class MovieData {
         this.mTitle = mTitle;
     }
 
-    public Integer getmYear() {
+    public String getmYear() {
         return mYear;
     }
 
-    public void setmYear(Integer mYear) {
+    public void setmYear(String mYear) {
         this.mYear = mYear;
     }
 
@@ -73,11 +76,11 @@ public class MovieData {
         this.mRate = mRate;
     }
 
-    public Double getmRunT() {
-        return mRunT;
+    public String getmRunT() {
+        return String.valueOf(mRunT);
     }
 
-    public void setmRunT(Double mRunT) {
+    public void setmRunT(String mRunT) {
         this.mRunT = mRunT;
     }
 
@@ -97,8 +100,8 @@ public MovieData(Bundle b) {
 
     if (b !=null) {
         this.mTitle = b.getString("title");
-        this.mYear = b.getInt("year");
-        this.mRunT = b.getDouble("runtime");
+        this.mYear = b.getString("year");
+        this.mRunT = b.getString("runtime");
         this.mRate = b.getString("mpaa_rating");
         this.mThumb = b.getString("thumbnail");
 
@@ -111,9 +114,9 @@ public MovieData(Bundle b) {
         Bundle bundle = new Bundle();
         MovieData movieData = new MovieData();
         bundle.putString("title", movieData.getmTitle());
-        bundle.putDouble("year", movieData.getmYear());
+        bundle.putString("year", movieData.getmYear());
         bundle.putString("mpaa_rating", movieData.getmRate());
-        bundle.putDouble("runtime", movieData.getmRunT());
+        bundle.putString("runtime", movieData.getmRunT());
         bundle.putString("thumbnail", movieData.getmThumb());
         return bundle;
     }
