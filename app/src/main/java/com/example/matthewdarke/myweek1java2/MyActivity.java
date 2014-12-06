@@ -37,7 +37,7 @@ public class MyActivity extends Activity implements MasterFragment.OnListCallBac
     public String detailSTR;
     List<MovieData> movieDataList;
     // private Button searchButton;
-    private ArrayList<MovieData> mMoviesList;
+    public static ArrayList<MovieData> mMoviesList;
 
     private static final String TAG_MOVIE_TITLE = "title";
     private static final String TAG_MOVIE_YEAR = "year";
@@ -182,7 +182,7 @@ public class MyActivity extends Activity implements MasterFragment.OnListCallBac
 
 
                     //JSONArray ar = new JSONArray(response);
-                    ArrayList<MovieData> mMoviesList = new ArrayList<MovieData>();
+                    mMoviesList = new ArrayList<MovieData>();
 
                     for (int i = 0; i < ar.length(); i++) {
 

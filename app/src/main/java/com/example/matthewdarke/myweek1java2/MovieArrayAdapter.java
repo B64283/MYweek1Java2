@@ -32,10 +32,10 @@ public class MovieArrayAdapter extends ArrayAdapter<MovieData> {
 
         LayoutInflater inflater =
                 (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.movie_listitem, null);
+        View view = inflater.inflate(R.layout.master_fragment, null);
 
         MovieData movieData = mMoviesList.get(position);
-        TextView tv = (TextView)view.findViewById(R.id.textView_list);
+        TextView tv = (TextView)view.findViewById(R.id.master_container);
 
         tv.setText(movieData.getmTitle());
 

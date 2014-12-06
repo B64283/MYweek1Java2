@@ -5,12 +5,10 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 /**
  * Created by matthewdarke on 11/22/14.
  */
-public class MovieData extends HashMap<String, String> {
+public class MovieData {
 
 
     final String TAG = "MOVIEDATA CLASS";

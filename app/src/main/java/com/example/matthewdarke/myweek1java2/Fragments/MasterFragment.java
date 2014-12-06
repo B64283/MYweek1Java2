@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import com.example.matthewdarke.myweek1java2.Model.MovieData;
-import com.example.matthewdarke.myweek1java2.MovieArrayAdapter;
 import com.example.matthewdarke.myweek1java2.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by matthewdarke on 11/25/14.
@@ -32,10 +31,10 @@ public class MasterFragment extends ListFragment {
     //private String mSearchWord;
     // public Button mSearchButton;
     public MasterFragment masterFragment;
-    //ArrayAdapter<MovieData> movieDataList;
-    public ArrayAdapter<MovieData> movieDataList;
-    ListView mMoviesList;
-
+    ArrayAdapter<MovieData> movieDataList;
+    ArrayList<MovieData> mMoviesList;
+    //ListView movieDataList;
+    //ArrayList<MovieData> arrayList;
 
 
     public MasterFragment() {
@@ -99,11 +98,7 @@ super.onCreate(SavedInstanceState);
     public void onActivityCreated(Bundle _SavedInstanceState) {
         super.onActivityCreated(_SavedInstanceState);
 
-
-        ArrayAdapter<MovieData> arrayAdapter = new ArrayAdapter<MovieData>(masterFragment.getActivity(), android.R.layout.simple_list_item_1,movieDataList);
-
-        movieDataList.findViewById(R.id.master_container);
-        setListAdapter(arrayAdapter);
+        mMoviesList = new ArrayList<MovieData>();
     }
 
 
@@ -125,7 +120,8 @@ super.onCreate(SavedInstanceState);
         super.onListItemClick(l, v, position, id);
         System.out.println("the button is working");
         //mListener.displayDetails();
-        MovieData movieData = movieDataList.get(position);
+        MovieData movieData;
+        movieData = movieDataList.getItem(getSelectedItemPosition());
 
 
         Bundle bundle = new Bundle();
